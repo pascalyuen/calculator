@@ -1,0 +1,40 @@
+html {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #0F3D3E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    height: 60vh;
+    width: 20vw;
+    border: solid 10px black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calculator-inner {
+    
+}
+
+.number-and-operator-area {
+    display: flex;
+
+}
+
+.operator-area {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    height: 70px;
+    width: 70px;
+}
