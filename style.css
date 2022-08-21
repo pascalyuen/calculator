@@ -6,7 +6,7 @@ html {
 
 body {
     min-height: 100vh;
-    background-color: #0F3D3E;
+    background-color: #5A8F7B;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,23 +20,19 @@ body {
     background-color: #1C3879;
     min-height: 450px;
     width: 350px;
-    border: solid 10px black;
+    border: solid 5px #1C3879;
     border-radius: 10px;
     padding: 10px;
 }
 
 .display-area {
     display: flex;
-    height: 100px;
-    background-color: #B1E1FF;
-    border-radius: 5px;
-}
-
-.display-area {
-    background-color: #F9F5EB;
-    margin-bottom: 10px;
     justify-content: flex-end;
     align-items: flex-end;
+    height: 100px;
+    border-radius: 5px;
+    background-color: #F9F5EB;
+    margin-bottom: 10px;
 }
 
 .display-text {
@@ -50,10 +46,6 @@ body {
     gap: 6px 3px;
 }
 
-.delete {
-    flex-grow: 2;
-}
-
 .operation {
     flex-grow: 1;
     background-color: #EAE3D2;
@@ -62,3 +54,12 @@ body {
     min-width: 76px;
 }
 
+.operation.delete {
+    flex-grow: 2;
+    background-color: #FF8FB1;
+}
+
+.operator,
+.equal {
+    background-color: #F87474;
+}
