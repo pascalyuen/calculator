@@ -10,6 +10,7 @@ let nextValue = 0;
 const arrayOfOperators = [];
 let counter = 0;
 let firstOperator = true;
+let answer = 0;
 
 
 // Actions
@@ -51,13 +52,13 @@ function operate(operator, a, b) {
 function numberClicked(e) {
     // If nextNumber is true, one of the operators has been clicked and the next number should be recorded. Else, record the first number
     if (nextNumber) {
-        if (nextValue <= 9999999999) {
+        if (nextValue <= 999999999) {
             nextValue += e.target.textContent;
             nextValue = parseInt(nextValue);
         }
         displayText.textContent = nextValue;
     } else {
-        if (lastValue <= 9999999999) {
+        if (lastValue <= 999999999) {
             lastValue += e.target.textContent;
             lastValue = parseInt(lastValue);
         }
@@ -77,7 +78,15 @@ function operatorClicked(e) {
         firstOperator = false;
     } else {
         lastValue = operate(arrayOfOperators[counter - 1], lastValue, nextValue);
-        displayText.textContent = lastValue;
+        if (arrayOfOperators[counter - 1] === '/' && nextValue === 0) {
+            alert('You can\'t divide by 0');
+            clearClicked;
+        }
+        if (lastValue >= 999999999) {
+            lastValue = lastValue.toExponential(2);
+        }
+            displayText.textContent = lastValue;
+        
         nextValue = 0;
     }
 
@@ -88,7 +97,16 @@ function operatorClicked(e) {
 
 
 function equalClicked(e) {
-    displayText.textContent = operate(arrayOfOperators[counter - 1], lastValue, nextValue);
+    answer = operate(arrayOfOperators[counter - 1], lastValue, nextValue);
+    if (arrayOfOperators[counter - 1] === '/' && nextValue === 0) {
+        alert('You can\'t divide by 0');
+        clearClicked;
+    } else {
+        displayText.textContent = answer;
+    }
+    if (answer >= 999999999) {
+        answer = answer.toExponential(2);
+    }
 }
 
 
