@@ -11,6 +11,7 @@ const arrayOfOperators = [];
 let counter = 0;
 let firstOperator = true;
 let answer = 0;
+let keyPress = false;
 
 
 // Actions
@@ -18,6 +19,7 @@ numbers.forEach(number => number.addEventListener('click', numberClicked));
 operators.forEach(operator => operator.addEventListener('click', operatorClicked));
 equal.addEventListener('click', equalClicked);
 clear.addEventListener('click', clearClicked);
+document.addEventListener('keydown', onKeyDown);
 
 
 // Functions
@@ -53,14 +55,24 @@ function numberClicked(e) {
     // If nextNumber is true, one of the operators has been clicked and the next number should be recorded. Else, record the first number
     if (nextNumber) {
         if (nextValue <= 999999999) {
-            nextValue += e.target.textContent;
-            nextValue = parseInt(nextValue);
+            if (keyPress) {
+                nextValue += e;
+                keyPress = false;
+            } else {
+                nextValue += e.target.textContent;
+            }
+            nextValue = parseFloat(nextValue);
         }
         displayText.textContent = nextValue;
     } else {
         if (lastValue <= 999999999) {
-            lastValue += e.target.textContent;
-            lastValue = parseInt(lastValue);
+            if (keyPress) {
+                lastValue += e;
+                keyPress = false;
+            } else {
+                lastValue += e.target.textContent;
+            }
+            lastValue = parseFloat(lastValue);
         }
         displayText.textContent = lastValue;
     }
@@ -71,10 +83,19 @@ function numberClicked(e) {
 
 function operatorClicked(e) {
     nextNumber = true;
-    arrayOfOperators.push(e.target.textContent);
+    if (keyPress) {
+        arrayOfOperators.push(e);
+    } else {
+        arrayOfOperators.push(e.target.textContent);
+    }    
 
     if (firstOperator) {
-        lastOperator = e.target.textContent;
+        if (keyPress) {
+            lastOperator = e;
+            keyPress = false;
+        } else {
+            lastOperator = e.target.textContent;
+        }
         firstOperator = false;
     } else {
         lastValue = operate(arrayOfOperators[counter - 1], lastValue, nextValue);
@@ -85,7 +106,7 @@ function operatorClicked(e) {
         if (lastValue >= 999999999) {
             lastValue = lastValue.toExponential(2);
         }
-            displayText.textContent = lastValue;
+            displayText.textContent = Math.round(lastValue * 10000000) / 10000000;
         
         nextValue = 0;
     }
@@ -98,11 +119,15 @@ function operatorClicked(e) {
 
 function equalClicked(e) {
     answer = operate(arrayOfOperators[counter - 1], lastValue, nextValue);
+    if (arrayOfOperators.length === 0) {
+        return lastValue;
+    }
+    // Case: dividing by zero
     if (arrayOfOperators[counter - 1] === '/' && nextValue === 0) {
         alert('You can\'t divide by 0');
         clearClicked;
     } else {
-        displayText.textContent = answer;
+        displayText.textContent = Math.round(answer * 10000000) / 10000000;
     }
     if (answer >= 999999999) {
         answer = answer.toExponential(2);
@@ -118,4 +143,18 @@ function clearClicked(e) {
     counter = 0;
     firstOperator = true;
     displayText.textContent = '0';
+}
+
+
+function onKeyDown(e) {
+    keyPress = true;
+    if (e.key >= 0 && e.key <= 9 || e.key === '.') {
+        numberClicked(e.key);
+    }
+    if (e.key === 'Add' || e.key === 'Subtract' || e.key === 'Multiply' || e.key === 'Divide') {
+        operatorClicked(e.Enter);
+    }
+    if (e.key === 'Enter') {
+        equalClicked(e.key);
+    }
 }
